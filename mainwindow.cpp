@@ -36,10 +36,10 @@ void MainWindow::paintEvent(QPaintEvent* event){
 
     //Input file should be in exact format as the output file of the School Attendance Zone project (https://github.com/louisgarder/school-atendance-zones)
     //A sample file is shown in "MaricopaCountyOutputFile.txt," which contains two configurations.
-    string inputFile = "MaricopaCountyOutputFile.txt";
+    string inputFile = "TYPE_FILE_NAME_AND_PATH_HERE";
 
     //Set this integer value equal to the specific conifiguration from the inputFile that should be displayed
-    int configuration = 2;
+    int configuration = 1;
 
 
     //Group blocks are represented by the longitude and latitude of their center of population, which is represented by a pair<double, double>
@@ -50,6 +50,14 @@ void MainWindow::paintEvent(QPaintEvent* event){
     ifstream in(inputFile);
     string str;
     bool configurationFound = false;
+
+    if(!in.is_open())
+    {
+        QString message = "File was not found. Please set 'inputFile' to a valid file name and path.";
+        painter.drawText(QPoint(50,50), message);
+        return;
+    }
+
 
     //transfers data from the inputFile to the vector 'coordinates'
     while (getline(in, str)){
@@ -82,6 +90,7 @@ void MainWindow::paintEvent(QPaintEvent* event){
     if(configurationFound == false){
         QString message = "Configuration was not found. Please set 'configuraton' to a valid value.";
         painter.drawText(QPoint(50,50), message);
+        return;
     }
 
     //Finding the minimum and maximum longitudes and latitudes of all group bocks.
